@@ -1,0 +1,616 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
+  COWORKER
+  MODERATOR
+  DELIVERY
+  SELLER
+}
+
+model User {
+  id                String       @id @default(cuid())
+  name              String?
+  phone             String       @unique
+  email             String?
+  avatar            String?
+  password          String?
+  otp               String?
+  newPhone          String?
+  isVerified        Boolean      @default(false)
+  isBanned          Boolean      @default(false)
+  role              Role         @default(USER)
+  providers         Provider[]
+  addresses         Address[]
+  sellers           Seller[]
+  orders            Order[]
+  points            Points[]
+  userPoints        UserPoints?
+  refunds           Refund[]
+  refundables       Refundable[]
+  releasedWithdraws Withdraw[]
+  wishlists         Wishlist[]
+  reviews           Review[]
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+}
+
+model Provider {
+  id        String   @id @default(cuid())
+  name      String
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Meta {
+  itemCount    Int
+  totalItems   Int
+  itemsPerPage Int
+  totalPages   Int
+  currentPage  Int
+
+  @@id([itemCount, totalItems, itemsPerPage, totalPages, currentPage])
+}
+
+model SubCategory {
+  id         String    @id @default(cuid())
+  name       String
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?
+  products   Product[]
+  image      String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Category {
+  id             String        @id @default(cuid())
+  name           String
+  image          String?
+  mainCategory   MainCategory? @relation(fields: [mainCategoryId], references: [id])
+  mainCategoryId String?
+  subCategories  SubCategory[]
+  products       Product[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model MainCategory {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  categories  Category[]
+  products    Product[]
+  sections    Sections[]
+  image       String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Brand {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  image       String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Tag {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Values {
+  id          String    @id @default(cuid())
+  value       String
+  meta        String?
+  attribute   Attribute @relation(fields: [attributeId], references: [id])
+  attributeId String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Attribute {
+  id                String             @id @default(cuid())
+  name              String
+  values            Values[]
+  productAttributes ProductAttribute[] @relation("AttributeToProductAttribute")
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model CouponUser {
+  id           String   @id @default(cuid())
+  code         String
+  discount     String
+  discountUnit String
+  points       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model CouponAdmin {
+  id              String   @id @default(cuid())
+  name            String
+  code            String
+  discount        String
+  discountUnit    String
+  minimumPurchase String
+  expires         DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Address {
+  id             String   @id @default(cuid())
+  name           String
+  phone          String
+  gender         String?
+  address        String
+  country        String
+  city           String
+  area           String
+  postal         String
+  user           User?    @relation(fields: [userId], references: [id])
+  userId         String?
+  shippingOrders Order[]  @relation("ShippingAddress")
+  billingOrders  Order[]  @relation("BillingAddress")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Bank {
+  id        String   @id @default(cuid())
+  name      String
+  accNumber String
+  routing   String
+  bankName  String
+  branch    String
+  seller    Seller?  @relation(fields: [sellerId], references: [id])
+  sellerId  String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Seller {
+  id              String        @id @default(cuid())
+  shopName        String
+  phone           String
+  logo            String
+  banner          String
+  address         String
+  metaTitle       String?
+  metaDescription String?
+  isVerified      Boolean       @default(false)
+  isBanned        Boolean       @default(false)
+  bank            Bank?
+  user            User?         @relation(fields: [userId], references: [id])
+  userId          String?       @unique
+  products        Product[]
+  orderSellers    OrderSeller[]
+  refundables     Refundable[]
+  withdraws       Withdraw[]
+  incomes         Income[]
+  reviews         Review[]
+  totalReview     Float         @default(0)
+  totalRating     Float         @default(0)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Flash {
+  id           String    @id @default(cuid())
+  title        String
+  image        String?
+  thumb        String?
+  start        DateTime
+  expires      DateTime
+  discount     String
+  discountUnit String
+  products     Product[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model ProductAttributeValues {
+  id                 String            @id @default(cuid())
+  variant            String?
+  price              String?
+  quantity           String?
+  image              String?
+  product            Product           @relation(fields: [productId], references: [id])
+  productId          String
+  productAttribute   ProductAttribute? @relation(fields: [productAttributeId], references: [id])
+  productAttributeId String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+}
+
+model ProductAttributeVariant {
+  id                 String            @id @default(cuid())
+  selected           String[]
+  product            Product           @relation(fields: [productId], references: [id])
+  productId          String
+  productAttribute   ProductAttribute? @relation(fields: [productAttributeId], references: [id])
+  productAttributeId String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+}
+
+model ProductAttribute {
+  id               String                    @id @default(cuid())
+  attributes       Attribute[]               @relation("AttributeToProductAttribute")
+  selectedVariants ProductAttributeVariant[]
+  attributeValues  ProductAttributeValues[]
+  product          Product                   @relation(fields: [productId], references: [id])
+  productId        String
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
+}
+
+model ProductSpecification {
+  id        String   @id @default(cuid())
+  title     String?
+  value     String?
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductMeta {
+  id          String   @id @default(cuid())
+  title       String?
+  description String?
+  metaTags    String[]
+  image       String?
+  product     Product  @relation(fields: [productId], references: [id])
+  productId   String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Product {
+  id                String                    @id @default(cuid())
+  name              String
+  seller            Seller                    @relation(fields: [sellerId], references: [id])
+  sellerId          String
+  mainCategory      MainCategory              @relation(fields: [mainCategoryId], references: [id])
+  mainCategoryId    String
+  category          Category?                 @relation(fields: [categoryId], references: [id])
+  categoryId        String?
+  subCategories     SubCategory[]
+  brand             Brand?                    @relation(fields: [brandId], references: [id])
+  brandId           String?
+  unit              String?
+  minPurchase       String?
+  tags              Tag[]
+  refundAble        Boolean                   @default(false)
+  images            String[]
+  youtubeLink       String?
+  flash             Flash?                    @relation(fields: [flashId], references: [id])
+  flashId           String?
+  price             String
+  quantity          String
+  discount          String
+  discountUnit      String
+  attributeValues   ProductAttributeValues[]
+  attributeVariants ProductAttributeVariant[]
+  productAttribute  ProductAttribute[]
+
+  description      String?
+  specifications   ProductSpecification[]
+  visibility       Boolean                @default(true)
+  isApproved       Boolean                @default(false)
+  meta             ProductMeta?
+  estimateDelivery String?
+  warranty         String?
+  showStock        Boolean                @default(true)
+  tax              String
+  taxUnit          String
+  totalPrice       String
+  disclaimer       String
+  orderProducts    OrderProduct[]
+  refundables      Refundable[]
+  wishlists        Wishlist[]
+  reviews          Review[]
+  sectionProducts  SectionProduct[]
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+}
+
+model OrderVariation {
+  id             String       @id @default(cuid())
+  name           String
+  variant        String
+  orderProduct   OrderProduct @relation(fields: [orderProductId], references: [id])
+  orderProductId String
+  refundables    Refundable[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model OrderProduct {
+  id            String           @id @default(cuid())
+  product       Product          @relation(fields: [productId], references: [id])
+  productId     String
+  quantity      Float
+  variations    OrderVariation[]
+  tax           Float
+  amount        Float
+  orderSeller   OrderSeller?     @relation(fields: [orderSellerId], references: [id])
+  orderSellerId String?
+  refundables   Refundable[]     @relation("OrderProductToRefundable")
+  refundableIds String[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+model OrderSeller {
+  id        String         @id @default(cuid())
+  seller    Seller         @relation(fields: [sellerId], references: [id])
+  sellerId  String
+  products  OrderProduct[]
+  order     Order          @relation(fields: [orderId], references: [id])
+  orderId   String
+  price     Float
+  status    String
+  cancelBy  String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model PaymentInfo {
+  id            String   @id @default(cuid())
+  paymentMethod String?
+  paymentId     String?
+  provider      String?
+  order         Order    @relation(fields: [orderId], references: [id])
+  orderId       String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Order {
+  id                String        @id @default(cuid())
+  orderId           String        @unique
+  sellers           OrderSeller[]
+  couponDiscount    Float         @default(0)
+  total             Float
+  subtotal          Float
+  shippingFees      Float
+  shippingCount     Float
+  estimateDelivery  String
+  payment           PaymentInfo?
+  shippingAddress   Address?      @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  shippingAddressId String?
+  billingAddress    Address?      @relation("BillingAddress", fields: [billingAddressId], references: [id])
+  billingAddressId  String?
+  note              String?
+  user              User?         @relation(fields: [userId], references: [id])
+  userId            String?
+  points            Points[]
+  refundables       Refundable[]
+  incomes           Income[]
+  paymentStatus     Boolean       @default(false)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}
+
+model Points {
+  id        String   @id @default(cuid())
+  points    Float
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserPoints {
+  id        String   @id @default(cuid())
+  points    Float
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Refundable {
+  id             String           @id @default(cuid())
+  user           User?            @relation(fields: [userId], references: [id])
+  userId         String?
+  product        Product?         @relation(fields: [productId], references: [id])
+  productId      String?
+  orderProduct   OrderProduct?    @relation("OrderProductToRefundable", fields: [orderProductId], references: [id])
+  orderProductId String?
+  order          Order?           @relation(fields: [orderId], references: [id])
+  orderId        String?
+  quantity       Float?
+  variations     OrderVariation[]
+  seller         Seller?          @relation(fields: [sellerId], references: [id])
+  sellerId       String?
+  couponDiscount Float?           @default(0)
+  amount         Float?
+  refunds        Refund[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}
+
+model Refund {
+  id           String     @id @default(cuid())
+  refundable   Refundable @relation(fields: [refundableId], references: [id])
+  refundableId String
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String
+  quantity     Float?
+  reason       String
+  description  String
+  status       String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Withdraw {
+  id           String   @id @default(cuid())
+  seller       Seller   @relation(fields: [sellerId], references: [id])
+  sellerId     String
+  amount       Float
+  releasedBy   User?    @relation(fields: [releasedById], references: [id])
+  releasedById String?
+  method       String
+  status       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Income {
+  id         String   @id @default(cuid())
+  seller     Seller   @relation(fields: [sellerId], references: [id])
+  sellerId   String
+  order      Order    @relation(fields: [orderId], references: [id])
+  orderId    String
+  income     Float?
+  paySuccess Boolean? @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Platform {
+  id        String   @id @default(cuid())
+  charge    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Shipping {
+  id               String   @id @default(cuid())
+  name             String
+  rateInsideDhaka  String
+  rateOutsideDhaka String
+  rateInSavar      String
+  estimateDelivery String
+  active           Boolean  @default(true)
+  description      String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Banner {
+  id        String   @id @default(cuid())
+  name      String
+  url       String
+  path      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Sections {
+  id              String           @id @default(cuid())
+  name            String
+  description     String
+  publish         Boolean          @default(true)
+  base            String
+  category        MainCategory?    @relation(fields: [categoryId], references: [id])
+  categoryId      String?
+  sectionProducts SectionProduct[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model SectionProduct {
+  id        String   @id @default(cuid())
+  section   Sections @relation(fields: [sectionId], references: [id])
+  sectionId String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Settings {
+  id              String   @id @default(cuid())
+  logo            String?
+  icon            String?
+  siteTitle       String?
+  slogan          String?
+  metaTitle       String?
+  metaDescription String?
+  metaTag         String[]
+  siteUrl         String?
+  ogTitle         String?
+  ogDescription   String?
+  ogImage         String?
+  email           String?
+  phone           String?
+  corporateOffice String?
+  headOffice      String?
+  facebook        String?
+  instagram       String?
+  youtube         String?
+  twitter         String?
+  linkedIn        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Wishlist {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId])
+}
+
+model Preorder {
+  id           String   @id @default(cuid())
+  firstName    String
+  lastName     String
+  phone        String
+  address      String
+  email        String
+  productImage String[]
+  productUrl   String[]
+  note         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  seller    Seller?  @relation(fields: [sellerId], references: [id])
+  sellerId  String?
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  image     String[]
+  comment   String
+  reply     String?
+  rating    Float
+  publish   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

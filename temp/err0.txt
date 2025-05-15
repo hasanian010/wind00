@@ -1,0 +1,213 @@
+
+> server@0.0.1 start:dev
+> nest start --watch
+
+[7:22:42 PM] Starting compilation in watch mode...
+
+src/modules/users/user.service.ts:25: - error TS2561: Object literal may only specify known properties, but 'provider' does not exist in type 'UserSelect<DefaultArgs>'. Did you mean to write 'providers'?
+
+25         provider: true,
+           ~~~~~~~~
+
+  node_modules/.prisma/client/index.d.ts:6262:5
+    6262     select?: UserSelect<ExtArgs> | null
+             ~~~~~~
+    The expected type comes from property 'select' which is declared here on type '{ select?: UserSelect<DefaultArgs> | null | undefined; omit?: UserOmit<DefaultArgs> | null | undefined; include?: UserInclude<DefaultArgs> | null | undefined; where: UserWhereUniqueInput; }'
+
+src/modules/users/user.service.ts:88: - error TS2322: Type '{ name?: { contains: string; mode: string; } | undefined; isVerified: boolean; role: string; }' is not assignable to type 'UserWhereInput'.
+  Types of property 'name' are incompatible.
+    Type '{ contains: string; mode: string; } | undefined' is not assignable to type 'string | StringNullableFilter<"User"> | null | undefined'.
+      Type '{ contains: string; mode: string; }' is not assignable to type 'string | StringNullableFilter<"User"> | null | undefined'.
+        Type '{ contains: string; mode: string; }' is not assignable to type 'StringNullableFilter<"User">'.
+          Types of property 'mode' are incompatible.
+            Type 'string' is not assignable to type 'QueryMode | undefined'.
+
+88         where,
+           ~~~~~
+
+src/modules/users/user.service.ts:8: - error TS2322: Type '{ createdAt: string; }' is not assignable to type 'UserOrderByWithRelationInput | UserOrderByWithRelationInput[] | undefined'.
+  Type '{ createdAt: string; }' is not assignable to type 'UserOrderByWithRelationInput'.
+    Types of property 'createdAt' are incompatible.
+      Type 'string' is not assignable to type 'SortOrder | undefined'.
+
+8         orderBy,
+           ~~~~~~~
+
+src/modules/users/user.service.ts:93:32 - error TS2322: Type '{ name?: { contains: string; mode: string; } | undefined; isVerified: boolean; role: string; }' is not assignable to type 'UserWhereInput'.
+  Types of property 'name' are incompatible.
+    Type '{ contains: string; mode: string; } | undefined' is not assignable to type 'string | StringNullableFilter<"User"> | null | undefined'.
+      Type '{ contains: string; mode: string; }' is not assignable to type 'string | StringNullableFilter<"User"> | null | undefined'.
+        Type '{ contains: string; mode: string; }' is not assignable to type 'StringNullableFilter<"User">'.
+          Types of property 'mode' are incompatible.
+            Type 'string' is not assignable to type 'QueryMode | undefined'.
+
+93       this.prisma.user.count({ where }),
+                                  ~~~~~
+
+src/modules/users/user.service.ts:173: - error TS2322: Type '{ name?: { contains: string; mode: string; } | undefined; isVerified: boolean; role: string; }' is not assignable to type 'UserWhereInput'.
+  Types of property 'name' are incompatible.
+    Type '{ contains: string; mode: string; } | undefined' is not assignable to type 'string | StringNullableFilter<"User"> | null | undefined'.
+      Type '{ contains: string; mode: string; }' is not assignable to type 'string | StringNullableFilter<"User"> | null | undefined'.
+        Type '{ contains: string; mode: string; }' is not assignable to type 'StringNullableFilter<"User">'.
+          Types of property 'mode' are incompatible.
+            Type 'string' is not assignable to type 'QueryMode | undefined'.
+
+173         where,
+            ~~~~~
+
+src/modules/users/user.service.ts:174: - error TS2322: Type '{ createdAt: string; }' is not assignable to type 'UserOrderByWithRelationInput | UserOrderByWithRelationInput[] | undefined'.
+  Type '{ createdAt: string; }' is not assignable to type 'UserOrderByWithRelationInput'.
+    Types of property 'createdAt' are incompatible.
+      Type 'string' is not assignable to type 'SortOrder | undefined'.
+
+174         orderBy,
+            ~~~~~~~
+
+src/modules/users/user.service.ts:178:32 - error TS2322: Type '{ name?: { contains: string; mode: string; } | undefined; isVerified: boolean; role: string; }' is not assignable to type 'UserWhereInput'.
+  Types of property 'name' are incompatible.
+    Type '{ contains: string; mode: string; } | undefined' is not assignable to type 'string | StringNullableFilter<"User"> | null | undefined'.
+      Type '{ contains: string; mode: string; }' is not assignable to type 'string | StringNullableFilter<"User"> | null | undefined'.
+        Type '{ contains: string; mode: string; }' is not assignable to type 'StringNullableFilter<"User">'.
+          Types of property 'mode' are incompatible.
+            Type 'string' is not assignable to type 'QueryMode | undefined'.
+
+178       this.prisma.user.count({ where }),
+                                   ~~~~~
+
+src/modules/users/user.service.ts:19: - error TS2820: Type '"admin"' is not assignable to type 'Role | EnumRoleFilter<"User"> | undefined'. Did you mean '"ADMIN"'?
+
+19         role: 'admin',
+            ~~~~
+
+src/modules/users/user.service.ts:237:15 - error TS2353: Object literal may only specify known properties, and 'otp' does not exist in type '(Without<UserUpdateInput, UserUncheckedUpdateInput> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput)'.
+
+237       data: { otp: secret.base32 },
+                  ~~~
+
+  node_modules/.prisma/client/index.d.ts:6521:5
+    6521     data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+             ~~~~
+    The expected type comes from property 'data' which is declared here on type '{ select?: UserSelect<DefaultArgs> | null | undefined; omit?: UserOmit<DefaultArgs> | null | undefined; include?: UserInclude<DefaultArgs> | null | undefined; data: (Without<...> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput); where: UserWhereUniqueInput; }'
+
+src/modules/users/user.service.ts:264:15 - error TS2353: Object literal may only specify known properties, and 'otp' does not exist in type '(Without<UserUpdateInput, UserUncheckedUpdateInput> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput)'.
+
+264       data: { otp: secret.base32 },
+                  ~~~
+
+  node_modules/.prisma/client/index.d.ts:6521:5
+    6521     data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+             ~~~~
+    The expected type comes from property 'data' which is declared here on type '{ select?: UserSelect<DefaultArgs> | null | undefined; omit?: UserOmit<DefaultArgs> | null | undefined; include?: UserInclude<DefaultArgs> | null | undefined; data: (Without<...> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput); where: UserWhereUniqueInput; }'
+
+src/modules/users/user.service.ts:278: - error TS2353: Object literal may only specify known properties, and 'otp' does not exist in type 'UserWhereInput'.
+
+278         otp: verifyPhoneInput.otp,
+            ~~~
+
+src/modules/users/user.service.ts:288: - error TS2353: Object literal may only specify known properties, and 'otp' does not exist in type '(Without<UserUpdateInput, UserUncheckedUpdateInput> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput)'.
+
+288         otp: null,
+            ~~~
+
+  node_modules/.prisma/client/index.d.ts:6521:5
+    6521     data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+             ~~~~
+    The expected type comes from property 'data' which is declared here on type '{ select?: UserSelect<DefaultArgs> | null | undefined; omit?: UserOmit<DefaultArgs> | null | undefined; include?: UserInclude<DefaultArgs> | null | undefined; data: (Without<...> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput); where: UserWhereUniqueInput; }'
+
+src/modules/users/user.service.ts:317:76 - error TS2339: Property 'password' does not exist on type '{ id: string; name: string | null; phone: string; email: string | null; avatar: string | null; isVerified: boolean; isBanned: boolean; role: Role; createdAt: Date; updatedAt: Date; }'.
+
+317     const isPasswordValid = await bcrypt.compare(loginInput.password, user.password);
+                                                                               ~~~~~~~~
+
+src/modules/users/user.service.ts:342: - error TS2820: Type '"admin"' is not assignable to type 'Role | EnumRoleFilter<"User"> | undefined'. Did you mean '"ADMIN"'?
+
+342         role: 'admin',
+            ~~~~
+
+src/modules/users/user.service.ts:348:76 - error TS2339: Property 'password' does not exist on type '{ id: string; name: string | null; phone: string; email: string | null; avatar: string | null; isVerified: boolean; isBanned: boolean; role: Role; createdAt: Date; updatedAt: Date; }'.
+
+348     const isPasswordValid = await bcrypt.compare(loginInput.password, user.password);
+                                                                               ~~~~~~~~
+
+src/modules/users/user.service.ts:373: - error TS2820: Type '"seller"' is not assignable to type 'Role | EnumRoleFilter<"User"> | undefined'. Did you mean '"SELLER"'?
+
+373         role: 'seller',
+            ~~~~
+
+src/modules/users/user.service.ts:37:76 - error TS2339: Property 'password' does not exist on type '{ id: string; name: string | null; phone: string; email: string | null; avatar: string | null; isVerified: boolean; isBanned: boolean; role: Role; createdAt: Date; updatedAt: Date; }'.
+
+37     const isPasswordValid = await bcrypt.compare(loginInput.password, user.password);
+                                                                               ~~~~~~~~
+
+src/modules/users/user.service.ts:417:91 - error TS2339: Property 'password' does not exist on type '{ id: string; name: string | null; phone: string; email: string | null; avatar: string | null; isVerified: boolean; isBanned: boolean; role: Role; createdAt: Date; updatedAt: Date; }'.
+
+417     const isOldPasswordValid = await bcrypt.compare(changePasswordInput.oldPassword, user.password);
+                                                                                              ~~~~~~~~
+
+src/modules/users/user.service.ts:424:15 - error TS2353: Object literal may only specify known properties, and 'password' does not exist in type '(Without<UserUpdateInput, UserUncheckedUpdateInput> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput)'.
+
+424       data: { password: newPasswordHash },
+                  ~~~~~~~~
+
+  node_modules/.prisma/client/index.d.ts:6521:5
+    6521     data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+             ~~~~
+    The expected type comes from property 'data' which is declared here on type '{ select?: UserSelect<DefaultArgs> | null | undefined; omit?: UserOmit<DefaultArgs> | null | undefined; include?: UserInclude<DefaultArgs> | null | undefined; data: (Without<...> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput); where: UserWhereUniqueInput; }'
+
+src/modules/users/user.service.ts:44:15 - error TS2353: Object literal may only specify known properties, and 'otp' does not exist in type '(Without<UserUpdateInput, UserUncheckedUpdateInput> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput)'.
+
+44       data: { otp: secret.base32 },
+                  ~~~
+
+  node_modules/.prisma/client/index.d.ts:6521:5
+    6521     data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+             ~~~~
+    The expected type comes from property 'data' which is declared here on type '{ select?: UserSelect<DefaultArgs> | null | undefined; omit?: UserOmit<DefaultArgs> | null | undefined; include?: UserInclude<DefaultArgs> | null | undefined; data: (Without<...> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput); where: UserWhereUniqueInput; }'
+
+src/modules/users/user.service.ts:463: - error TS2353: Object literal may only specify known properties, and 'otp' does not exist in type 'UserWhereInput'.
+
+463         otp: resetPasswordInput.code,
+            ~~~
+
+src/modules/users/user.service.ts:473:15 - error TS2353: Object literal may only specify known properties, and 'password' does not exist in type '(Without<UserUpdateInput, UserUncheckedUpdateInput> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput)'.
+
+473       data: { password: passwordHash, otp: null },
+                  ~~~~~~~~
+
+  node_modules/.prisma/client/index.d.ts:6521:5
+    6521     data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+             ~~~~
+    The expected type comes from property 'data' which is declared here on type '{ select?: UserSelect<DefaultArgs> | null | undefined; omit?: UserOmit<DefaultArgs> | null | undefined; include?: UserInclude<DefaultArgs> | null | undefined; data: (Without<...> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput); where: UserWhereUniqueInput; }'
+
+src/modules/users/user.service.ts:506: - error TS2353: Object literal may only specify known properties, and 'newPhone' does not exist in type '(Without<UserUpdateInput, UserUncheckedUpdateInput> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput)'.
+
+506         newPhone: phoneChangeInput.phone,
+            ~~~~~~~~
+
+  node_modules/.prisma/client/index.d.ts:6521:5
+    6521     data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+             ~~~~
+    The expected type comes from property 'data' which is declared here on type '{ select?: UserSelect<DefaultArgs> | null | undefined; omit?: UserOmit<DefaultArgs> | null | undefined; include?: UserInclude<DefaultArgs> | null | undefined; data: (Without<...> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput); where: UserWhereUniqueInput; }'
+
+src/modules/users/user.service.ts:525:14 - error TS2339: Property 'otp' does not exist on type '{ id: string; name: string | null; phone: string; email: string | null; avatar: string | null; isVerified: boolean; isBanned: boolean; role: Role; createdAt: Date; updatedAt: Date; }'.
+
+525     if (user.otp !== changePhoneVerifyInput.code || user.newPhone !== changePhoneVerifyInput.phone) {
+                 ~~~
+
+src/modules/users/user.service.ts:525:58 - error TS2339: Property 'newPhone' does not exist on type '{ id: string; name: string | null; phone: string; email: string | null; avatar: string | null; isVerified: boolean; isBanned: boolean; role: Role; createdAt: Date; updatedAt: Date; }'.
+
+525     if (user.otp !== changePhoneVerifyInput.code || user.newPhone !== changePhoneVerifyInput.phone) {
+                                                             ~~~~~~~~
+
+src/modules/users/user.service.ts:532: - error TS2353: Object literal may only specify known properties, and 'newPhone' does not exist in type '(Without<UserUpdateInput, UserUncheckedUpdateInput> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput)'.
+
+532         newPhone: null,
+            ~~~~~~~~
+
+  node_modules/.prisma/client/index.d.ts:6521:5
+    6521     data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+             ~~~~
+    The expected type comes from property 'data' which is declared here on type '{ select?: UserSelect<DefaultArgs> | null | undefined; omit?: UserOmit<DefaultArgs> | null | undefined; include?: UserInclude<DefaultArgs> | null | undefined; data: (Without<...> & UserUncheckedUpdateInput) | (Without<...> & UserUpdateInput); where: UserWhereUniqueInput; }'
+
+[7:22:56 PM] Found 26 errors. Watching for file changes.
+

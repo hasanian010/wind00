@@ -1,0 +1,16 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  hello: String!
+  productStatus: String!
+  orderStatus: String!
+  paymentStatus: String!
+  testAaa: String!
+  brandStatus: String!
+  tagStatus: String!
+  categoryStatus: String!
+  sellerStatus: String!
+  flashStatus: String!
+}
